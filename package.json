@@ -4,15 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
+    "heroku-postbuild": "ng build --aot",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "heroku-postbuild": "ng build"
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
   },
   "engines": {
-    "node": "v12.20.0",
-    "npm": "6.9.0"
+    "node": "v16.13.1",
+    "npm": "8.1.2"
   },
   "private": true,
   "dependencies": {
