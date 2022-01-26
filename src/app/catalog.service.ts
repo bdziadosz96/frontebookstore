@@ -9,11 +9,12 @@ import {Book} from "./book";
 })
 export class CatalogService {
 
-  private apiServerUl = environment.apiBaseUrl;
+  private apiServerUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) { }
 
   public getCatalog(): Observable<Book[]> {
-    return this.http.get<Book[]>('${this.apiServerUrl}/catalog')
+    return this.http.get<Book[]>(`${this.apiServerUrl}/catalog`);
   }
+
 }
