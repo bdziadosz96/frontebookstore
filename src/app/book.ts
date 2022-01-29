@@ -8,5 +8,4 @@ export interface Book {
   coverUrl: string;
   available: number;
   authors: Author[];
-
 }

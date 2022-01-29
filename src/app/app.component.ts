@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CatalogService} from "./catalog.service";
 import {Book} from "./book";
 import {CartItem} from "./CartItem";
+import {NgForm} from "@angular/forms";
+
 
 @Component({
   selector: 'app-root',
@@ -36,13 +38,43 @@ export class AppComponent implements OnInit {
   }
 
   public addToCart(book: Book): void {
-    // @ts-ignore
-    const current: CartItem = this.cartItems.find(x => x.bookId == book.id);
+    const current: CartItem | undefined = this.cartItems.find(x => x.book.id === book.id);
     if (current) {
       current.quantity += 1;
     } else {
-      this.cartItems.push({bookId: book.id, quantity: 1} as CartItem)
+      this.cartItems.push({book: book, quantity: 1} as CartItem)
     }
     console.log('Cart is: ' + JSON.stringify(this.cartItems));
+  }
+
+  public totalCartAmount(): number {
+    return this.cartItems
+      .reduce((sum, current) => sum + current.book.price * current.quantity, 0);
+  }
+
+  public clearCart(): void {
+    this.cartItems = [];
+  }
+
+  public onOpenModal(mode: string): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'cart') {
+      button.setAttribute('data-target', '#cartModal');
+    }
+    if (mode === 'order') {
+      button.setAttribute('data-target', '#orderModal');
+    }
+    // @ts-ignore
+    container.appendChild(button);
+    button.click();
+  }
+
+  public onOrderSubmit(orderForm: NgForm): void {
+    console.log("Received form: {}")
+    console.log(orderForm)
   }
 }
