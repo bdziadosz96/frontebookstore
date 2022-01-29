@@ -3,6 +3,8 @@ import {CatalogService} from "./catalog.service";
 import {Book} from "./book";
 import {CartItem} from "./CartItem";
 import {NgForm} from "@angular/forms";
+import {OrderService} from "./order.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 
 @Component({
@@ -16,7 +18,7 @@ export class AppComponent implements OnInit {
   public cartItems: CartItem[] = [];
 
 
-  constructor(private catalogService: CatalogService) {
+  constructor(private catalogService: CatalogService, private orderService: OrderService) {
   }
 
   ngOnInit(): void {
@@ -74,7 +76,19 @@ export class AppComponent implements OnInit {
   }
 
   public onOrderSubmit(orderForm: NgForm): void {
+    // @ts-ignore
+    document.getElementById(`cancel-order-button`).click();
+    // @ts-ignore
+    document.getElementById(`close-cart-button`).click();
     console.log("Received form: {}")
-    console.log(orderForm)
+    this.orderService.submitOrder(orderForm.value, this.cartItems)
+      .subscribe(
+        (response: any) => {
+          console.log("Order submited")
+          this.cartItems = [];
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message)
+        });
   }
 }
